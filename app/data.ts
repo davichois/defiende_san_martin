@@ -30,7 +30,7 @@ export type Proposal = { n: number; title: string; body: string };
 
 export const campaign = {
   name: "DAVID LANDA TUCTO",
-  years: "2026–2030",
+  years: "2027–2030",
   cta: { label: "Unirse", href: "/unirse" },
   // Redes sociales: pega aquí los enlaces oficiales. Las que queden vacías no se muestran.
   social: {

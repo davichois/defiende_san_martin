@@ -1,37 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Defiende San Martín · David Landa Tucto
 
-## Getting Started
+Web de campaña de David Landa Tucto (Fuerza Popular) al Gobierno Regional de San Martín:
+portada con sus propuestas y registro de personeros de mesa (`/unirse`) guardado en Supabase.
 
-First, run the development server:
+Hecha con Next.js 16 (App Router), Tailwind 4, Supabase y ExcelJS.
+
+## Desarrollo
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env.local   # y completa los valores
+npm install
+npm run dev                  # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Base de datos (Supabase)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Crea un proyecto en [supabase.com](https://supabase.com). Para menor latencia desde Perú elige la región **South America (São Paulo)**.
+2. **SQL Editor → New query**: pega `supabase/migrations/0001_personeros.sql` y ejecuta **Run**.
+3. **Project Settings → API**: copia la *Project URL* y la clave **service_role**.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+La tabla `personeros` tiene RLS activado y ningún acceso público: solo el servidor de la web
+(con la service_role key) inserta registros y genera el Excel.
 
-## Learn More
+## Variables de entorno
 
-To learn more about Next.js, take a look at the following resources:
+| Variable | Obligatoria | Uso |
+| --- | --- | --- |
+| `SUPABASE_URL` | Sí | URL del proyecto de Supabase |
+| `SUPABASE_SERVICE_ROLE_KEY` | Sí | Clave secreta del servidor (nunca con prefijo `NEXT_PUBLIC_`) |
+| `ADMIN_EXPORT_PASSWORD` | Sí | Contraseña para descargar el Excel (tres toques en el bigote) |
+| `DNI_API_URL` | No | API de DNI (por defecto `https://api.apis.net.pe/v1/dni`) |
+| `DNI_API_TOKEN` | No | Token de la API de DNI, si la pide |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deploy en Vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Sube el código a GitHub (`git push`).
+2. En [vercel.com/new](https://vercel.com/new) importa el repositorio. Vercel detecta Next.js solo: no cambies los comandos de build.
+3. En **Environment Variables** agrega las variables de la tabla de arriba (para *Production* y *Preview*).
+4. **Deploy**. Cada `git push` a `main` vuelve a publicar.
+5. (Opcional) **Settings → Domains** para conectar tu dominio.
 
-## Deploy on Vercel
+`vercel.json` fija las funciones en la región **gru1 (São Paulo)**, la más cercana a Perú; conviene
+que Supabase esté en la misma región.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Después del primer deploy, verifica
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# defiende_san_martin
+- Registrar un personero de prueba en `/unirse` y verlo en Supabase (**Table Editor → personeros**).
+- Tres toques en el bigote → contraseña → se descarga el Excel.
+- Borrar el registro de prueba en Supabase.
+
+### Notas
+
+- Los límites de intentos (consulta de DNI y contraseña del Excel) se guardan en la memoria de
+  cada función; en Vercel cada instancia lleva su propia cuenta. Usa una contraseña larga en
+  `ADMIN_EXPORT_PASSWORD`.
+- Las fotos originales (PNG de alta resolución) están en `design/fotos-originales/` y no se
+  publican; la web usa las versiones optimizadas de `public/fotos/`.
