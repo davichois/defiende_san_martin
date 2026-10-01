@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import Link from "next/link";
-import { campaign } from "../data";
 import RegistroForm from "./RegistroForm";
 import "./unirse.css";
 
@@ -13,9 +12,14 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: `Personeros en San Martín · ${campaign.name}`,
+  title: "Sé personero · Defiende el voto en San Martín",
   description:
-    "Inscríbete como personero de mesa en San Martín y cuida el voto.",
+    "Inscríbete como personero de mesa de David Landa Tucto y Fuerza Popular. Defiende el voto en tu distrito de San Martín este 4 de octubre.",
+  openGraph: {
+    title: "Sé personero · Defiende el voto en San Martín",
+    description:
+      "Inscríbete como personero de mesa de David Landa Tucto y Fuerza Popular. Defiende el voto en tu distrito de San Martín.",
+  },
 };
 
 export default function UnirsePage() {
