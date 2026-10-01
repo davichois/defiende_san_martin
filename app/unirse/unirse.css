@@ -1,0 +1,476 @@
+/* Registro de personeros: todo en una pantalla, sin tarjetas. Josefin Sans (títulos y botones con
+   raya abajo, como la portada) + Montserrat (etiquetas, campos y textos).
+   Escritorio: los tres pasos lado a lado. Celular/tablet: un paso por pantalla. */
+
+.reg-page {
+  position: relative;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: clamp(14px, 3vh, 32px) clamp(16px, 4vw, 56px) clamp(14px, 3vh, 32px);
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-mont), var(--font-text), Arial, sans-serif;
+}
+.reg-back {
+  flex: none;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px 5px 0;
+  border-bottom: 2px solid var(--ink);
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  transition: color 0.2s, border-color 0.2s;
+}
+.reg-back svg {
+  width: 14px;
+  height: 14px;
+  color: var(--brand);
+}
+.reg-back:hover {
+  color: var(--brand);
+  border-color: var(--brand);
+}
+
+/* Mensaje arriba a la derecha, a la altura de "Volver" (posición absoluta: no mueve nada) */
+.reg-claim {
+  position: absolute;
+  top: clamp(14px, 3vh, 32px);
+  right: clamp(16px, 4vw, 56px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  pointer-events: none;
+}
+.reg-claim-kicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mont), sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+.reg-claim-kicker::before {
+  content: "";
+  width: 22px;
+  height: 2px;
+  background: currentColor;
+}
+.reg-claim strong {
+  margin-top: 6px;
+  padding: 0 0 6px 24px;
+  border-bottom: 3px solid var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(22px, 3.4vh, 32px);
+  font-weight: 700;
+  line-height: 1.05;
+}
+.reg-claim em {
+  font-style: normal;
+  color: var(--brand);
+}
+
+/* ---------- Formulario (escritorio: 3 columnas + franja final) ---------- */
+.fl {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  grid-template-rows: auto auto;
+  align-content: center;
+  align-items: start;
+  column-gap: clamp(28px, 4.5vw, 80px);
+  row-gap: clamp(12px, 3vh, 36px);
+  padding-top: clamp(8px, 2vh, 24px);
+}
+.fl-progress {
+  display: none;
+}
+.fl-step {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 2.6vh, 28px);
+  min-width: 0;
+}
+.fl-title {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 0 32px 7px 0;
+  border-bottom: 3px solid var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(22px, 3.4vh, 32px);
+  font-weight: 700;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+.fl-num {
+  font-family: var(--font-mont), sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--brand);
+}
+
+.fl-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.fl-field label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+.fl-optional {
+  letter-spacing: 0.08em;
+  color: #b3aea5;
+}
+.fl-field input,
+.fl-field select {
+  width: 100%;
+  padding: clamp(4px, 0.9vh, 8px) 0 clamp(6px, 1vh, 10px);
+  border: 0;
+  border-bottom: 2px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font: 500 clamp(16px, 2.3vh, 20px) / 1.3 var(--font-mont), sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.fl-field input::placeholder {
+  color: #bcb7ad;
+  font-weight: 400;
+}
+.fl-field input:focus,
+.fl-field select:focus {
+  border-bottom-color: var(--ink);
+}
+.fl-field [aria-invalid="true"] {
+  border-bottom-color: #d64545;
+}
+.fl-field select {
+  appearance: none;
+  padding-right: 26px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23ff6a1a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    no-repeat right 4px center;
+  cursor: pointer;
+}
+.fl-field select:disabled {
+  color: #bcb7ad;
+  cursor: not-allowed;
+}
+.fl-error,
+.fl-hint {
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 500;
+}
+.fl-error {
+  color: #c43d3d;
+}
+.fl-hint {
+  color: var(--brand);
+}
+
+.fl-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+}
+.fl-row input {
+  flex: 1;
+  min-width: 0;
+}
+.fl-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 2.6vh, 28px) 24px;
+}
+
+/* Enlaces con raya y flecha naranja, como "Unirse" en la portada */
+.fl-link,
+.fl-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 2px solid var(--ink);
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ink);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.2s, border-color 0.2s, padding 0.25s ease;
+}
+.fl-link svg,
+.fl-cta svg {
+  width: 0.8em;
+  height: 0.8em;
+  flex: none;
+  color: var(--brand);
+  transition: rotate 0.25s ease;
+}
+.fl-link {
+  flex: none;
+  padding: 0 12px 6px 0;
+  font-size: 17px;
+}
+.fl-link:hover:not(:disabled),
+.fl-cta:hover:not(:disabled) {
+  color: var(--brand);
+  border-color: var(--brand);
+}
+.fl-cta:hover:not(:disabled) svg,
+.fl-link:not(.fl-back):hover:not(:disabled) svg {
+  rotate: -45deg;
+}
+.fl-link.is-ok {
+  color: #2d7a3a;
+  border-color: #2d7a3a;
+}
+.fl-link:disabled,
+.fl-cta:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+.fl-cta {
+  padding: 0 22px 8px 2px;
+  border-bottom-width: 3px;
+  font-size: clamp(22px, 3.6vh, 34px);
+}
+.fl-cta:hover:not(:disabled) {
+  padding-right: 30px;
+}
+
+.fl-note {
+  padding-left: 12px;
+  border-left: 3px solid var(--brand);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.fl-note strong {
+  color: var(--ink);
+}
+.fl-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+.fl-badge {
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #e9e6df;
+  color: var(--muted);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.fl-badge.is-yes {
+  background: #e3f3e5;
+  color: #2d7a3a;
+}
+.fl-badge.is-no {
+  background: #fbe4e4;
+  color: #b23a3a;
+}
+.fl-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+  cursor: pointer;
+}
+.fl-check input {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  accent-color: var(--brand);
+}
+.fl-consent {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+/* Franja final: en escritorio solo el botón de registro */
+.fl-end {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 24px;
+  padding-top: clamp(10px, 2vh, 20px);
+  border-top: 1px solid var(--line);
+}
+.fl-nav {
+  display: none;
+}
+.fl-alert {
+  margin-right: auto;
+  padding-left: 12px;
+  border-left: 3px solid #d64545;
+  color: #9c2f2f;
+  font-size: 14px;
+}
+
+/* ---------- Registro enviado ---------- */
+.fl-done {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(14px, 3vh, 24px);
+  width: 100%;
+  max-width: 720px;
+  margin-inline: auto;
+}
+.fl-done-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--brand);
+  animation: cdLive 1.6s ease-out infinite;
+}
+.fl-big {
+  padding: 0 40px 10px 0;
+  border-bottom: 3px solid var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(30px, 6vh, 52px);
+  font-weight: 700;
+  line-height: 1.05;
+}
+.fl-done p {
+  max-width: 480px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+/* ---------- Celular y tablet: un paso por pantalla ---------- */
+@media (max-width: 1023px) {
+  .fl {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 1fr auto;
+    align-content: stretch;
+    max-width: 620px;
+  }
+  .fl-progress {
+    display: flex;
+    gap: 6px;
+    align-self: start;
+  }
+  .fl-progress span {
+    flex: 1;
+    height: 3px;
+    border-radius: 3px;
+    background: rgb(0 0 0 / 0.12);
+    transition: background 0.3s;
+  }
+  .fl-progress span.is-on {
+    background: var(--ink);
+  }
+  .fl[data-step="0"] .fl-step:not([data-n="0"]),
+  .fl[data-step="1"] .fl-step:not([data-n="1"]),
+  .fl[data-step="2"] .fl-step:not([data-n="2"]) {
+    display: none;
+  }
+  .fl-step {
+    align-self: center;
+    animation: fadeUp 0.3s ease-out both;
+  }
+  .fl-end {
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    border-top: 0;
+  }
+  .fl-nav {
+    display: contents;
+  }
+  .fl-next {
+    margin-left: auto;
+  }
+  .fl-submit {
+    display: none;
+  }
+  .fl-submit.is-last {
+    display: inline-flex;
+    margin-left: auto;
+  }
+  .fl-cta {
+    font-size: clamp(22px, 6vw, 28px);
+  }
+  .fl-alert {
+    flex-basis: 100%;
+  }
+}
+/* Celular y tablet: el mensaje en una sola línea compacta junto a "Volver" */
+@media (max-width: 1023px) {
+  .reg-claim {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .reg-claim-kicker {
+    display: none;
+  }
+  .reg-claim strong {
+    margin-top: 0;
+    padding: 0 0 5px 12px;
+    border-bottom-width: 2px;
+    font-size: clamp(14px, 3.9vw, 20px);
+    white-space: nowrap;
+  }
+  .reg-claim strong::before {
+    content: "Personeros · ";
+    color: var(--brand);
+  }
+  .reg-claim-place {
+    display: none;
+  }
+}
+@media (max-width: 480px) {
+  .fl-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  /* "Anterior" y "Registrar personero" en la misma línea */
+  .fl-end {
+    gap: 12px;
+    flex-wrap: nowrap;
+  }
+  .fl-back {
+    font-size: 15px;
+  }
+  .fl-submit.is-last {
+    font-size: clamp(17px, 5vw, 22px);
+    padding-right: 8px;
+    gap: 6px;
+  }
+}
